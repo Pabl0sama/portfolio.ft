@@ -7,86 +7,53 @@
 <meta name="description" content="Documentation technique du projet d'infrastructure de supervision - GHT de Moselle-Est.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Karla:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-<style>
-  .tf-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit;margin-right:auto;}
-  .tf-logo-mark{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--accent, #2f6fed);color:var(--surface, #fff);font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.02em;flex-shrink:0;}
-  .tf-logo-text{font-family:'Outfit',sans-serif;font-weight:600;font-size:.95rem;line-height:1.1;color:var(--ink, #16181d);white-space:nowrap;}
-  .tf-logo-text span{display:block;font-family:'Karla',sans-serif;font-weight:400;font-size:.72rem;color:var(--ink-soft, #6b7280);}
-  .doc-header-bar .header-inner{gap:1rem;}
-</style>
 </head>
 <body class="doc-page">
 
-<!-- ============ HEADER (documentation) ============ -->
-<header class="site-header doc-header-bar">
-  <div class="wrap header-inner">
-    <a href="index.html#top" class="tf-logo" aria-label="Retour à l'accueil du portfolio">
-      <span class="tf-logo-mark">TF</span>
-      <span class="tf-logo-text">Tristan Feisthauer<span>Portfolio</span></span>
-    </a>
-
-    <div class="doc-header-title">
-      <span class="eyebrow doc-eyebrow">projet · supervision</span>
-      <span class="doc-title-text">Documentation technique</span>
-    </div>
-
-    <a href="index.html#projets" class="btn btn-ghost btn-small">← Retour au portfolio</a>
-  </div>
+<header class="topbar">
+  <a href="index.html#top" class="brand" aria-label="Retour à l'accueil du portfolio">
+    <span class="brand-mark">TF</span>
+    <span class="brand-text">Tristan Feisthauer<small>Portfolio</small></span>
+  </a>
+  <span class="topbar-title">Documentation technique</span>
+  <a href="index.html#projets" class="btn btn-line btn-small">Retour au portfolio</a>
 </header>
 
 <main class="doc-main">
-  <div class="doc-wrap doc-toolbar">
+  <div class="doc-toolbar">
     <div>
-      <h1 class="doc-h1">Infrastructure de supervision - GHT Moselle-Est</h1>
-      <p class="doc-sub">Document technique détaillant la conception et la mise en œuvre du projet de supervision Zabbix.</p>
+      <h1>Infrastructure de supervision - GHT Moselle-Est</h1>
+      <p>Document technique détaillant la conception et la mise en œuvre du projet de supervision Zabbix.</p>
     </div>
-    <a href="documentation-supervision.pdf" class="btn btn-primary btn-small" download>Télécharger le PDF ↓</a>
+    <a href="documentation-supervision.pdf" class="btn btn-solid btn-small" download>Télécharger le PDF</a>
   </div>
 
-  <div class="doc-viewer doc-wrap">
-    <iframe
-      id="docFrame"
-      class="doc-embed"
-      src="documentation-supervision.pdf"
-      title="Documentation technique du projet de supervision"
-      loading="lazy">
-    </iframe>
-
+  <div class="doc-viewer">
+    <iframe id="docFrame" class="doc-embed" src="documentation-supervision.pdf" title="Documentation technique du projet de supervision" loading="lazy"></iframe>
     <div class="doc-fallback" id="docFallback">
-      <p>Le document n'est pas encore disponible ici.</p>
-      <p class="doc-fallback-hint">Ajoute un fichier nommé <code>documentation-supervision.pdf</code> à la racine du site pour qu'il s'affiche automatiquement sur cette page.</p>
+      <p>Le PDF ne peut pas s'afficher dans cette page.</p>
+      <a href="documentation-supervision.pdf" class="btn btn-solid btn-small" download>Télécharger le PDF</a>
     </div>
   </div>
 </main>
 
-<!-- ============ FOOTER ============ -->
 <footer class="site-footer">
-  <div class="wrap footer-inner">
-    <p>© <span id="year"></span> FEISTHAUER Tristan - Administrateur Systèmes &amp; Réseaux</p>
-    <p class="footer-meta">Mise en page assistée par IA</p>
-  </div>
+  <p>© <span id="year"></span> FEISTHAUER Tristan - Administrateur Systèmes &amp; Réseaux</p>
 </footer>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Affiche un message de secours si le PDF n'est pas encore présent sur le site.
-  (function checkPdf() {
+  // Affiche un message de secours si le PDF est introuvable.
+  (function () {
     var frame = document.getElementById('docFrame');
     var fallback = document.getElementById('docFallback');
+    function showFallback() { frame.style.display = 'none'; fallback.style.display = 'flex'; }
     fetch(frame.getAttribute('src'), { method: 'HEAD' })
-      .then(function (res) {
-        if (!res.ok) {
-          frame.style.display = 'none';
-          fallback.style.display = 'flex';
-        }
-      })
-      .catch(function () {
-        frame.style.display = 'none';
-        fallback.style.display = 'flex';
-      });
+      .then(function (res) { if (!res.ok) showFallback(); })
+      .catch(showFallback);
   })();
 </script>
 </body>
