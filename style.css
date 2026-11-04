@@ -232,3 +232,59 @@ p { margin: 0 0 16px; }
 @media (max-width: 720px) {
   .topbar-title { display: none; }
 }
+
+/* ============================================
+   ARRIÈRE-PLAN · réseau discret
+   À charger APRÈS style.css
+   Réglage de l'intensité : --bg-fx-opacity (0 = invisible, 1 = fort)
+   ============================================ */
+:root {
+  --bg-fx-opacity: 0.55;
+}
+
+/* Calque 1 : lueurs douces turquoise / violet */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(520px 420px at 8% 12%,  rgba(47, 143, 130, 0.14), transparent 70%),
+    radial-gradient(560px 460px at 92% 32%, rgba(124, 92, 255, 0.14), transparent 70%),
+    radial-gradient(620px 520px at 45% 105%, rgba(124, 92, 255, 0.09), transparent 70%);
+}
+
+/* Calque 2 : grille de points + schéma réseau en filigrane.
+   Le masque atténue le motif au centre pour garder le texte bien lisible. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--bg-fx-opacity);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640' viewBox='0 0 640 640' fill='none'%3E%3Cg stroke='%237c5cff' stroke-opacity='.35' stroke-width='1.2'%3E%3Cpath d='M80 120 L210 70 L330 150 L470 90 L560 200'/%3E%3Cpath d='M210 70 L190 240 L330 150'/%3E%3Cpath d='M190 240 L90 360 L240 430'/%3E%3Cpath d='M330 150 L420 300 L560 200'/%3E%3Cpath d='M420 300 L240 430 L360 560 L520 470 L420 300'/%3E%3Cpath d='M90 360 L110 540 L240 430'/%3E%3C/g%3E%3Cg fill='%232f8f82' fill-opacity='.55'%3E%3Ccircle cx='80' cy='120' r='4'/%3E%3Ccircle cx='470' cy='90' r='4'/%3E%3Ccircle cx='560' cy='200' r='4'/%3E%3Ccircle cx='90' cy='360' r='4'/%3E%3Ccircle cx='110' cy='540' r='4'/%3E%3Ccircle cx='520' cy='470' r='4'/%3E%3C/g%3E%3Cg fill='%23ffffff' stroke='%237c5cff' stroke-opacity='.5' stroke-width='1.2'%3E%3Ccircle cx='210' cy='70' r='7'/%3E%3Ccircle cx='330' cy='150' r='7'/%3E%3Ccircle cx='190' cy='240' r='7'/%3E%3Ccircle cx='420' cy='300' r='7'/%3E%3Ccircle cx='240' cy='430' r='7'/%3E%3Ccircle cx='360' cy='560' r='7'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(rgba(34, 29, 56, 0.12) 1px, transparent 1.6px);
+  background-size: 640px 640px, 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 55% 75% at 50% 50%, rgba(0, 0, 0, 0.18), #000 100%);
+          mask-image: radial-gradient(ellipse 55% 75% at 50% 50%, rgba(0, 0, 0, 0.18), #000 100%);
+}
+
+/* Les sections « alt » étaient blanches opaques : on les rend
+   légèrement translucides pour laisser deviner le fond. */
+.section-alt {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(2px);
+}
+
+/* Mobile : on allège encore */
+@media (max-width: 720px) {
+  :root { --bg-fx-opacity: 0.35; }
+}
+
+/* Impression : pas de fond */
+@media print {
+  body::before, body::after { display: none; }
+}
